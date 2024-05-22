@@ -20,7 +20,7 @@ export default function Filter() {
         <input
           ref={inputRef}
           type="text"
-          className=" bg-transparent focus:outline-none"
+          className=" bg-transparent w-full focus:outline-none"
           placeholder="Search for a country..."
         />
       </div>

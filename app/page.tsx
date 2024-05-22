@@ -1,9 +1,12 @@
 "use client";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Filter from "./Components/filter";
 import NavBar from "./Components/navbar";
-import RestCountries from "./Components/restCountries";
+import RestCountries from "./Components/countries/restCountries";
 import Link from "next/link";
+import CountriesLoading from "./loading";
+import axios from "axios";
+import ErrorPage from "./error";
 
 type Theme = "light" | "dark";
 
@@ -29,14 +32,10 @@ export default function Home() {
 
     const apiCall = async () => {
       //TODO: this has to work by region filter and name search filter by using conditions fetch
-      const res = await fetch(`https://restcountries.com/v3.1/all`, {
-        method: "GET",
-        next: {
-          revalidate: 120,
-        },
-      });
-      const data = await res.json();
-      setData(data);
+
+      const data = await axios("/data.json");
+
+      setData(data.data);
     };
     apiCall();
   }, []);
@@ -44,17 +43,17 @@ export default function Home() {
   const allCountries = data
     .sort(() => Math.random() - 0.5)
     .map((country: any) => {
-      filteredData.namesOfCountries.push(country.name.common);
+      filteredData.namesOfCountries.push(country.name);
       filteredData.countriesRegion.push(country.region);
       filteredData.countryBorders.push(country.borders);
 
       return (
-        <Link key={country.name?.common} href={`./${country.name?.common}`}>
+        <Link key={country.name} href={`./${country.name}`}>
           <RestCountries
-            key={country.name?.common}
-            countryName={country.name?.common}
-            src={country.flags?.svg}
-            alt={country.flags?.alt}
+            key={country.name}
+            countryName={country.name}
+            src={country.flag}
+            alt={`${country.name} image`}
             population={country.population}
             region={country.region}
             capital={country?.capital}
@@ -62,15 +61,18 @@ export default function Home() {
         </Link>
       );
     });
+  const countryLoading = <CountriesLoading />;
 
   return (
     <>
       <NavBar theme={theme} setTheme={setTheme} />
       <div className="container mt-[80px] mx-auto flex flex-col gap-8 items-center">
         <Filter />
-        <div className="grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {allCountries}
-        </div>
+        <Suspense fallback={<CountriesLoading />}>
+          <div className="grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {allCountries}
+          </div>
+        </Suspense>
       </div>
     </>
   );
