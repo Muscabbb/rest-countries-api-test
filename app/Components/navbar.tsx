@@ -1,12 +1,12 @@
 "use client";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction} from "react";
 import { BsMoon } from "react-icons/bs";
 import { FaMoon } from "react-icons/fa";
 
-type Theme = "light" | "dark";
 
-export default function NavBar() {
-  const [theme, setTheme] = useState<Theme>("light");
+
+export default function NavBar({theme, setTheme}: {theme: "light" | "dark", setTheme: Dispatch<SetStateAction<"light" | "dark">>}) {
+  
 
   return (
     <div className="background-el w-full h-[70px] fixed top-0 left-0 z-10 shadow-md">

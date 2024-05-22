@@ -9,7 +9,7 @@ export default function Filter() {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [btnValue, setBtnValue] = useState("");
   return (
-    <div className="w-full flex flex-col items-start px-3 gap-2 md:flex-row md:justify-between  md:items-center bg-transparent">
+    <div className="w-full flex flex-col items-start py-5 px-3 md:px-0 gap-2 md:flex-row md:justify-between  md:items-center bg-transparent">
       <div className="search background-el cursor-pointer w-full md:w-auto  rounded flex items-center text-sm md:text-lg lg:text-xl shadow-md">
         <span
           className="search-menu p-3 rounded"
