@@ -31,6 +31,7 @@ export default function Home() {
   const [theme, setTheme] = useState<Theme>("light");
   const [data, setData] = useState([]);
   const [region, setRegion] = useState("");
+  const [search, setSearch] = useState("");
   const regions = new Set(filteredData.countriesRegion);
 
   const handleClick = (event: any) => {
@@ -39,7 +40,7 @@ export default function Home() {
 
   useEffect(() => {
     setTheme(localStorage.getItem("theme") as Theme);
-
+    //Fetching data
     const apiCall = async () => {
       //TODO: this has to work by region filter and name search filter by using conditions fetch
 
@@ -56,7 +57,11 @@ export default function Home() {
     filteredData.countryBorders.push(country.borders);
   });
 
-  if (region === "") {
+  function handleOnchange(value: string) {
+    setSearch(value.toLowerCase());
+  }
+
+  if (region === "" && search === "") {
     allCountries = data
       .sort(() => Math.random() - 0.5)
       .map((country: any) => {
@@ -91,6 +96,26 @@ export default function Home() {
           </Link>
         )
     );
+  } else if (search !== "") {
+    allCountries = data.map((country: any) => {
+      const countryName: string = country.name.toLowerCase();
+      console.log(countryName);
+
+      return (
+        countryName.includes(search) && (
+          <Link key={countryName} href={`./${countryName}`}>
+            <RestCountries
+              countryName={countryName}
+              src={country.flag}
+              alt={`${country.name} image`}
+              population={country.population}
+              region={country.region}
+              capital={country?.capital}
+            />
+          </Link>
+        )
+      );
+    });
   }
 
   const countryLoading = <CountriesLoading />;
@@ -100,7 +125,7 @@ export default function Home() {
       <NavBar theme={theme} setTheme={setTheme} />
       <div className="container mt-[80px] mx-auto flex flex-col gap-8 items-center">
         <div className="w-full flex flex-col items-start py-5 px-3 md:px-0 gap-2 md:flex-row md:justify-between  md:items-center bg-transparent">
-          <Filter />
+          <Filter handleOnchange={handleOnchange} />
           <RegionFiltering handleClick={handleClick} regions={regions} />
         </div>
 

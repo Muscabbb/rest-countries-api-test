@@ -4,10 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { IoIosArrowDown } from "react-icons/io";
 import RegionFiltering from "./regionFiltering";
+import { ValueOf } from "next/dist/shared/lib/constants";
 
-type Filters = {};
+type Filters = {
+  handleOnchange: (value: string) => void;
+};
 
-export default function Filter({}: Filters) {
+export default function Filter({ handleOnchange }: Filters) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const btnValue = useRef<HTMLButtonElement | null>(null);
 
@@ -28,6 +31,7 @@ export default function Filter({}: Filters) {
         type="text"
         className=" bg-transparent w-full focus:outline-none"
         placeholder="Search for a country..."
+        onChange={() => handleOnchange(inputRef.current?.value as string)}
       />
     </div>
   );
