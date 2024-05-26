@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
 type FilteringProps = {
   handleClick: (e: any) => void;
@@ -15,7 +15,7 @@ const RegionFiltering = ({ handleClick, regions }: FilteringProps) => {
         className="p-3 rounded-md flex justify-between gap-4 cursor-pointer items-center "
         onClick={() => setShowRegions(!showRegions)}
       >
-        Filter by Region <IoIosArrowDown />
+        Filter by Region {showRegions ? <IoIosArrowUp /> : <IoIosArrowDown />}
       </button>
       {showRegions && (
         <div className="background-el w-full  absolute z-30 left-0 -bottom-1 translate-y-full rounded-md shadow-md flex flex-col transition-all gap-2">
