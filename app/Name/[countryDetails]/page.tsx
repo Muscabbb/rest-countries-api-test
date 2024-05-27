@@ -1,17 +1,16 @@
 "use client";
-import Link from "next/link";
-import Image from "next/image";
-import React, { useEffect, useState } from "react";
-import { FaArrowLeftLong } from "react-icons/fa6";
-import axios from "axios";
 
-export default function DetailedCountry({
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { FaArrowLeftLong } from "react-icons/fa6";
+
+export default function DetailsPage({
   params,
 }: {
   params: { countryDetails: string };
 }) {
   const [data, setData] = useState([]);
-  const [currentCountry, setCurrentCountry] = useState([]);
+  const [currentCountry, setCurrentCountry] = useState<any>([]);
 
   useEffect(() => {
     //Fetching data
@@ -30,72 +29,88 @@ export default function DetailedCountry({
     apiCall(params.countryDetails);
   }, []);
 
-  const allBorders = data.map((country: any) => {
-    if (country.alpha3Code.includes(currentCountry.borders)) {
-      return (
-        <Link
-          key={country.name}
-          href={`Name/${country.name}`}
-          className="bg-element shadow-lg p-2 rounded"
-        >
-          {country.nam}
-        </Link>
-      );
-    }
+  const borders = data.map((country) => {
+    currentCountry.map((current: any) => {
+      console.log(country.alpha3Code.includes(current.borders));
+      console.log(current.borders.join(","));
+      console.log(country.name);
+    });
+    return (
+      <div key={country.name} className="">
+        is it workin
+      </div>
+    );
   });
 
   return (
-    <div className="container mt-[80px] mx-auto flex flex-col gap-8">
-      <div className="py-10 bg-transparent ">
-        <Link href={"/"}>
-          <button className="go-back flex items-center gap-5 background-el py-3 px-7 rounded-sm cursor-pointer shadow-lg   ">
-            <FaArrowLeftLong />
-            back
-          </button>
-        </Link>
-      </div>
-
-      <div className="country-holder bg-transparent flex flex-col md:flex-row md:items-center justify-between h-4/5 py-5 gap-3 ">
-        <div className="img relative h-2/6 md:h-full basis-1/3">
-          <img src={currentCountry.flag} alt="good shit" />
+    <div className="container mt-[80px] pb-14 mx-auto flex flex-col">
+      <Link
+        href={"/"}
+        className="background-el py-3  rounded shadow my-10 flex items-center justify-center w-32"
+      >
+        <FaArrowLeftLong className=" mr-3" />
+        <span>Back</span>
+      </Link>
+      <div className="flex items-center justify-between">
+        <div className="img basis-2/5">
+          <img
+            src={currentCountry?.flags?.svg}
+            alt="good shit"
+            className="w-full h-full"
+          />
         </div>
-        <div className="flex flex-col px-4 md:px-0 md:basis-3/5 gap-8 bg-transparent">
-          <div className="flex flex-col md:flex-row md:items-center justify-between bg-transparent">
-            <div className=" space-y-2 bg-transparent">
-              <h1 className="mb-5 bg-transparent text-3xl">
+        <div className="flex basis-2/4 flex-col gap-8">
+          <div className="flex items-center justify-between">
+            <div className=" space-y-1">
+              <h1 className=" font-bold text-3xl mb-5">
                 {currentCountry.name}
               </h1>
-              <p className="bg-transparent">
-                Native Name: {currentCountry.nativeName}
+              <p className=" font-light">
+                <span className=" capitalize font-medium">Native Name: </span>
+                {currentCountry.nativeName}
               </p>
-              <p className="bg-transparent capitalize">
-                population: {currentCountry.population}
+              <p className=" font-light">
+                <span className=" capitalize font-medium">Population: </span>
+                {currentCountry.population}
               </p>
-              <p className="bg-transparent capitalize">
-                sub region: {currentCountry.subregion}
+              <p className=" font-light">
+                <span className=" capitalize font-medium">region: </span>
+                {currentCountry.region}
               </p>
-              <p className="bg-transparent capitalize">
-                Capital: {currentCountry.capital}
+              <p className=" font-light">
+                <span className=" capitalize font-medium">sub region: </span>
+                {currentCountry.subRegion}
+              </p>
+              <p className=" font-light">
+                <span className=" capitalize font-medium">capital: </span>
+                {currentCountry.capital}
               </p>
             </div>
-            <div className="space-y-2 bg-transparent basis-1/2">
-              <span className="bg-transparent capitalize">
-                top level domain: {currentCountry.topLevelDomain}
-              </span>
-              <span className="bg-transparent capitalize">
-                currencies: {currentCountry.currencies?.name}
-              </span>
-              <span className="bg-transparent capitalize">
-                languages: {currentCountry.languages?.name}
-              </span>
+            <div className="space-y-1 basis-2/4">
+              <p className=" font-light">
+                <span className=" capitalize font-medium">
+                  top level domain:{" "}
+                </span>
+                {currentCountry.topLevelDomain}
+              </p>
+              <p className=" font-light">
+                <span className=" capitalize font-medium">currencies: </span>
+                {currentCountry.currencies
+                  .map((currency) => currency.name)
+                  .join(",")}
+              </p>
+              <p className=" font-light">
+                <span className=" capitalize font-medium">Languages: </span>
+                {currentCountry.languages.map((lang) => lang.name).join(",")}
+              </p>
             </div>
           </div>
-          <div className="flex items-center bg-transparent gap-2">
-            <h1 className="bg-transparent">Border Countries:</h1>
-            allBorders
+          <div className="borders flex items-center gap-2">
+            <h2 className=" capitalize">Border countries:</h2>
           </div>
         </div>
       </div>
     </div>
   );
 }
+import Link from "next/link";

@@ -73,10 +73,11 @@ export default function Home() {
           </Link>
         );
       });
-  } else if (region !== "") {
-    allCountries = data.map(
-      (country: any) =>
-        country.region === region && (
+  } else if (region !== "" || search !== "") {
+    allCountries = data.map((country: any) => {
+      const countryName: string = country.name.toLowerCase();
+      if (country.region === region) {
+        return (
           <Link key={country.name} href={`Name/${country.name}`}>
             <RestCountries
               key={country.name}
@@ -88,15 +89,9 @@ export default function Home() {
               capital={country?.capital}
             />
           </Link>
-        )
-    );
-  } else if (search !== "") {
-    allCountries = data.map((country: any) => {
-      const countryName: string = country.name.toLowerCase();
-      console.log(countryName);
-
-      return (
-        countryName.includes(search) && (
+        );
+      } else if (countryName.includes(search)) {
+        return (
           <Link key={countryName} href={`Name/${country.name}`}>
             <RestCountries
               countryName={countryName}
@@ -107,8 +102,8 @@ export default function Home() {
               capital={country?.capital}
             />
           </Link>
-        )
-      );
+        );
+      }
     });
   }
 
