@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Nunito_Sans } from "next/font/google";
 import "./globals.css";
-import NavBar from "./Components/navbar";
 
 const inter = Nunito_Sans({ subsets: ["latin"] });
 
@@ -17,8 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <NavBar />
+      <body className={inter.className} suppressHydrationWarning>
         {children}
       </body>
     </html>

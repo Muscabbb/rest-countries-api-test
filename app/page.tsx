@@ -1,11 +1,12 @@
 "use client";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useCallback, useEffect, useState } from "react";
 import Filter from "./Components/filter";
 import RestCountries from "./Components/countries/restCountries";
 import Link from "next/link";
 import CountriesLoading from "./loading";
 import axios from "axios";
 import RegionFiltering from "./Components/regionFiltering";
+import NavBar from "./Components/navbar";
 
 type FilteredData = {
   namesOfCountries: string[];
@@ -23,7 +24,10 @@ let allCountries: any;
 
 //TODO: add next theme
 
+type Theme = "light" | "dark";
+
 export default function Home() {
+  const [theme, setTheme] = useState<Theme>("light");
   const [data, setData] = useState([]);
   const [region, setRegion] = useState("");
   const [search, setSearch] = useState("");
@@ -107,10 +111,16 @@ export default function Home() {
     });
   }
 
+  function handleTheme(theme: "light" | "dark") {
+    setTheme(theme);
+    document.body.classList.toggle("dark");
+  }
+
   const countryLoading = <CountriesLoading />;
 
   return (
     <>
+      <NavBar theme={theme} handleTheme={handleTheme} />
       <div className="container mt-[80px] mx-auto flex flex-col gap-8 items-center">
         <div className="w-full flex flex-col items-start py-5 px-3 md:px-0 gap-2 md:flex-row md:justify-between  md:items-center bg-transparent">
           <Filter handleOnchange={handleOnchange} />

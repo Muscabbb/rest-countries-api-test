@@ -9,13 +9,11 @@
   --input-text: hsl(0, 0%, 52%);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: hsl(207, 26%, 17%);
-    --background-el: hsl(209, 23%, 22%);
-    --text-color: hsl(0, 0%, 100%);
-    --input-text: hsl(0, 0%, 100%);
-  }
+.dark {
+  --background: hsl(207, 26%, 17%);
+  --background-el: hsl(209, 23%, 22%);
+  --text-color: hsl(0, 0%, 100%);
+  --input-text: hsl(0, 0%, 100%);
 }
 
 .background-el {

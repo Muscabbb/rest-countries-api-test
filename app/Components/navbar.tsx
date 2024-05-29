@@ -3,11 +3,13 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { BsMoon } from "react-icons/bs";
 import { FaMoon } from "react-icons/fa";
 
-type Theme = "light" | "dark";
-
-export default function NavBar({}: {}) {
-  const [theme, setTheme] = useState<Theme>("light");
-
+export default function NavBar({
+  theme,
+  handleTheme,
+}: {
+  theme: "light" | "dark";
+  handleTheme: (theme: "light" | "dark") => void;
+}) {
   return (
     <div className="background-el w-full h-[70px] fixed top-0 left-0 z-10 shadow-md">
       <div className="container mx-auto h-full flex justify-between items-center">
@@ -17,7 +19,7 @@ export default function NavBar({}: {}) {
         {theme === "light" && (
           <div
             className="theme-toggler cursor-pointer flex items-center gap-1"
-            onClick={() => setTheme("dark")}
+            onClick={() => handleTheme("dark")}
           >
             <BsMoon />
 
@@ -28,7 +30,7 @@ export default function NavBar({}: {}) {
         {theme === "dark" && (
           <div
             className="theme-toggler cursor-pointer flex items-center gap-1"
-            onClick={() => setTheme("light")}
+            onClick={() => handleTheme("light")}
           >
             <FaMoon />
 
