@@ -1,5 +1,5 @@
 "use client";
-import { Suspense, useCallback, useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Filter from "./Components/filter";
 import RestCountries from "./Components/countries/restCountries";
 import Link from "next/link";
@@ -21,6 +21,7 @@ const filteredData: FilteredData = {
 };
 
 let allCountries: any;
+let filteredCountriesData: any;
 
 //TODO: add next theme
 
@@ -32,10 +33,6 @@ export default function Home() {
   const [region, setRegion] = useState("");
   const [search, setSearch] = useState("");
   const regions = new Set(filteredData.countriesRegion);
-
-  const handleClick = (event: any) => {
-    setRegion(event.target.innerHTML);
-  };
 
   useEffect(() => {
     //Fetching data
@@ -49,6 +46,8 @@ export default function Home() {
     apiCall();
   }, []);
 
+  filteredCountriesData = filteredCountries(data, search, region);
+
   data.forEach((country: any) => {
     filteredData.namesOfCountries.push(country.name);
     filteredData.countriesRegion.push(country.region);
@@ -59,10 +58,32 @@ export default function Home() {
     setSearch(value.toLowerCase());
   }
 
-  if (region === "" && search === "") {
-    allCountries = data
-      .sort(() => Math.random() - 0.5)
-      .map((country: any) => {
+  const handleClick = (event: any) => {
+    setRegion(event.target.innerHTML);
+  };
+
+  const countries = () => {
+    let results: any;
+    if (region === "" && search === "") {
+      results = data
+        .sort(() => Math.random() - 0.5)
+        .map((country: any) => {
+          return (
+            <Link key={country.name} href={`Name/${country.name}`}>
+              <RestCountries
+                key={country.name}
+                countryName={country.name}
+                src={country.flag}
+                alt={`${country.name} image`}
+                population={country.population}
+                region={country.region}
+                capital={country?.capital}
+              />
+            </Link>
+          );
+        });
+    } else if (region || search) {
+      results = filteredCountriesData.map((country: any) => {
         return (
           <Link key={country.name} href={`Name/${country.name}`}>
             <RestCountries
@@ -77,44 +98,17 @@ export default function Home() {
           </Link>
         );
       });
-  } else if (region !== "" || search !== "") {
-    allCountries = data.map((country: any) => {
-      const countryName: string = country.name.toLowerCase();
-      if (country.region === region) {
-        return (
-          <Link key={country.name} href={`Name/${country.name}`}>
-            <RestCountries
-              key={country.name}
-              countryName={country.name}
-              src={country.flag}
-              alt={`${country.name} image`}
-              population={country.population}
-              region={country.region}
-              capital={country?.capital}
-            />
-          </Link>
-        );
-      } else if (countryName.includes(search)) {
-        return (
-          <Link key={countryName} href={`Name/${country.name}`}>
-            <RestCountries
-              countryName={countryName}
-              src={country.flag}
-              alt={`${country.name} image`}
-              population={country.population}
-              region={country.region}
-              capital={country?.capital}
-            />
-          </Link>
-        );
-      }
-    });
-  }
+    }
+    allCountries = results;
+  };
 
-  function handleTheme(theme: "light" | "dark") {
-    setTheme(theme);
+  countries();
+
+  const handleTheme = () => {
+    const otherTheme = theme === "light" ? "dark" : "light";
+    setTheme(otherTheme);
     document.body.classList.toggle("dark");
-  }
+  };
 
   const countryLoading = <CountriesLoading />;
 
@@ -127,7 +121,7 @@ export default function Home() {
           <RegionFiltering handleClick={handleClick} regions={regions} />
         </div>
 
-        <Suspense fallback={<CountriesLoading />}>
+        <Suspense fallback={countryLoading}>
           <div className="grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {allCountries}
           </div>
@@ -135,4 +129,25 @@ export default function Home() {
       </div>
     </>
   );
+}
+
+function filteredCountries(data: any, search: string, region: string) {
+  let templateData = data;
+
+  if (region) {
+    templateData = templateData.filter(
+      (country: any) => country.region === region
+    );
+  }
+
+  if (search) {
+    templateData = templateData.filter((country: any) => {
+      const countryName = country.name.toLowerCase();
+      if (countryName.includes(search)) {
+        return country;
+      }
+    });
+  }
+
+  return templateData;
 }

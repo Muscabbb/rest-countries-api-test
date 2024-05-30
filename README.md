@@ -9,6 +9,5 @@
 ##-[x] add the region filter features
 ##-[x] add the search filter features
 ##-[] creating the details page with the dynamic router
-##-[] add theme toggler
-##-[] use Callback to solve the un-neciecery re-rendering in the RestCountries Components
-##-[] fix the bug when using the region filter and search filter together
+##-[x] add theme toggler
+##-[x] fix the bug when using the region filter and search filter together
