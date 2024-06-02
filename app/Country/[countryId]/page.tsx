@@ -13,7 +13,7 @@ export default function CountryDetails({
 }) {
   const [theme, setTheme] = useState<Theme>("light");
   const [data, setData] = useState([]);
-  const [currentCountry, setCurrentCountry] = useState([]);
+  const [currentCountry, setCurrentCountry] = useState<any>([]);
 
   useEffect(() => {
     //Fetching data
