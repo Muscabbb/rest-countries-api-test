@@ -23,8 +23,6 @@ const filteredData: FilteredData = {
 let allCountries: any;
 let filteredCountriesData: any;
 
-//TODO: add next theme
-
 type Theme = "light" | "dark";
 
 export default function Home() {
@@ -37,8 +35,6 @@ export default function Home() {
   useEffect(() => {
     //Fetching data
     const apiCall = async () => {
-      //TODO: this has to work by region filter and name search filter by using conditions fetch
-
       const data = await axios("/data.json");
 
       setData(data.data);
@@ -61,7 +57,7 @@ export default function Home() {
   const handleClick = (event: any) => {
     setRegion(event.target.innerHTML);
   };
-
+  //Countries Data to display
   const countries = () => {
     let results: any;
     if (region === "" && search === "") {
@@ -69,7 +65,7 @@ export default function Home() {
         .sort(() => Math.random() - 0.5)
         .map((country: any) => {
           return (
-            <Link key={country.name} href={`Name/${country.name}`}>
+            <Link key={country.name} href={`Country/${country.name}`}>
               <RestCountries
                 key={country.name}
                 countryName={country.name}
@@ -83,9 +79,10 @@ export default function Home() {
           );
         });
     } else if (region || search) {
+      // returning the condition match countries
       results = filteredCountriesData.map((country: any) => {
         return (
-          <Link key={country.name} href={`Name/${country.name}`}>
+          <Link key={country.name} href={`Country/${country.name}`}>
             <RestCountries
               key={country.name}
               countryName={country.name}

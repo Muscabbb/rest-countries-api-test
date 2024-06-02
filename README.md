@@ -11,3 +11,5 @@
 ##-[] creating the details page with the dynamic router
 ##-[x] add theme toggler
 ##-[x] fix the bug when using the region filter and search filter together
+##-[] add the loading page feature
+##-[] add the error page feature
