@@ -3,7 +3,6 @@ import { Suspense, useEffect, useState } from "react";
 import Filter from "./Components/filter";
 import RestCountries from "./Components/countries/restCountries";
 import Link from "next/link";
-import CountriesLoading from "./loading";
 import axios from "axios";
 import RegionFiltering from "./Components/regionFiltering";
 import NavBar from "./Components/navbar";
@@ -29,6 +28,7 @@ export default function Home() {
   const [theme, setTheme] = useState<Theme>("light");
   const [data, setData] = useState([]);
   const [region, setRegion] = useState("");
+  const [showRegions, setShowRegions] = useState(false);
   const [search, setSearch] = useState("");
   const regions = new Set(filteredData.countriesRegion);
 
@@ -56,6 +56,7 @@ export default function Home() {
 
   const handleClick = (event: any) => {
     setRegion(event.target.innerHTML);
+    setShowRegions(false);
   };
   //Countries Data to display
   const countries = () => {
@@ -107,22 +108,23 @@ export default function Home() {
     document.body.classList.toggle("dark");
   };
 
-  const countryLoading = <CountriesLoading />;
-
   return (
     <>
       <NavBar theme={theme} handleTheme={handleTheme} />
       <div className="container mt-[80px] mx-auto flex flex-col gap-8 items-center">
         <div className="w-full flex flex-col items-start py-5 px-3 md:px-0 gap-2 md:flex-row md:justify-between  md:items-center bg-transparent">
           <Filter handleOnchange={handleOnchange} />
-          <RegionFiltering handleClick={handleClick} regions={regions} />
+          <RegionFiltering
+            handleClick={handleClick}
+            regions={regions}
+            showRegions={showRegions}
+            setShowRegions={setShowRegions}
+          />
         </div>
 
-        <Suspense fallback={countryLoading}>
-          <div className="grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {allCountries}
-          </div>
-        </Suspense>
+        <div className="grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {allCountries}
+        </div>
       </div>
     </>
   );

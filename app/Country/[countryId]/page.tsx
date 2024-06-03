@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import NavBar from "@/app/Components/navbar";
 import Link from "next/link";
 import { FaArrowLeftLong } from "react-icons/fa6";

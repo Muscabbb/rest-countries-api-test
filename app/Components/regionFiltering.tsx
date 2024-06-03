@@ -1,14 +1,19 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
 type FilteringProps = {
   handleClick: (e: any) => void;
   regions: any;
+  showRegions: boolean;
+  setShowRegions: Dispatch<SetStateAction<boolean>>;
 };
 
-const RegionFiltering = ({ handleClick, regions }: FilteringProps) => {
-  const [showRegions, setShowRegions] = useState(false);
-
+const RegionFiltering = ({
+  handleClick,
+  regions,
+  showRegions,
+  setShowRegions,
+}: FilteringProps) => {
   return (
     <div className="background-el relative rounded-md ">
       <button
@@ -19,7 +24,6 @@ const RegionFiltering = ({ handleClick, regions }: FilteringProps) => {
       </button>
       {showRegions && (
         <div className="background-el w-full  absolute z-30 left-0 -bottom-1 translate-y-full rounded-md shadow-md flex flex-col transition-all gap-2">
-          {/* //TODO: HERE */}
           {[...regions].map((region: any, i: number) => (
             <button
               key={i}

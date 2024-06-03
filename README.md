@@ -8,7 +8,7 @@
 ##-[x] completing the home page with the data that were got from the Countries api
 ##-[x] add the region filter features
 ##-[x] add the search filter features
-##-[] creating the details page with the dynamic router
+##-[x] creating the details page with the dynamic router
 ##-[x] add theme toggler
 ##-[x] fix the bug when using the region filter and search filter together
 ##-[] add the loading page feature
